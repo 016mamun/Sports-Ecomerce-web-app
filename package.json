@@ -1,0 +1,16 @@
+{
+  "name": "fnf-sports",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FNF Sports - Sports E-commerce Platform",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:user-web": "npm run dev --workspace=apps/user-web",
+    "dev:admin-web": "npm run dev --workspace=apps/admin-web",
+    "build:user-web": "npm run build --workspace=apps/user-web",
+    "build:admin-web": "npm run build --workspace=apps/admin-web"
+  }
+}
