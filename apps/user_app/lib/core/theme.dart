@@ -18,9 +18,7 @@ class AppTheme {
     color: textPrimary,
   );
 
-  static TextStyle bodyStyle = GoogleFonts.inter(
-    color: textSecondary,
-  );
+  static TextStyle bodyStyle = GoogleFonts.inter(color: textSecondary);
 
   // Theme Data
   static ThemeData get theme => ThemeData(
@@ -30,7 +28,7 @@ class AppTheme {
       seedColor: accentColor,
       primary: primaryColor,
       secondary: accentColor,
-      background: backgroundColor,
+      surface: backgroundColor,
     ),
     scaffoldBackgroundColor: backgroundColor,
     appBarTheme: AppBarTheme(
@@ -48,13 +46,8 @@ class AppTheme {
         backgroundColor: accentColor,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        textStyle: GoogleFonts.inter(
-          fontWeight: FontWeight.w600,
-          fontSize: 16,
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        textStyle: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 16),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
@@ -62,9 +55,7 @@ class AppTheme {
         foregroundColor: primaryColor,
         side: const BorderSide(color: primaryColor, width: 2),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -87,9 +78,7 @@ class AppTheme {
     cardTheme: CardThemeData(
       color: cardColor,
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.white,

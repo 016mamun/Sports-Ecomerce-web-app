@@ -27,15 +27,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
     try {
       final supabase = Supabase.instance.client;
 
-      final orders = await supabase.from('orders').select('total_amount, status').neq('status', 'cancelled');
+      final orders = await supabase
+          .from('orders')
+          .select('total_amount, status')
+          .neq('status', 'cancelled');
       final products = await supabase.from('products').select('id');
-      final users = await supabase.from('profiles').select('id').eq('role', 'user');
+      final users = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('role', 'user');
 
       setState(() {
         _totalOrders = orders.length;
         _totalProducts = products.length;
         _totalUsers = users.length;
-        _totalRevenue = orders.fold(0.0, (sum, o) => sum + (o['total_amount'] as num).toDouble());
+        _totalRevenue = orders.fold(
+          0.0,
+          (sum, o) => sum + (o['total_amount'] as num).toDouble(),
+        );
         _loading = false;
       });
     } catch (e) {
@@ -52,7 +61,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Dashboard', style: AppTheme.headingStyle.copyWith(fontSize: 24)),
+          Text(
+            'Dashboard',
+            style: AppTheme.headingStyle.copyWith(fontSize: 24),
+          ),
           const SizedBox(height: 8),
           Text('Welcome back to FNF Sports Admin', style: AppTheme.bodyStyle),
           const SizedBox(height: 24),
@@ -64,10 +76,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
             mainAxisSpacing: 12,
             childAspectRatio: 1.5,
             children: [
-              _StatCard(title: 'Revenue', value: AppConstants.formatPrice(_totalRevenue), icon: Icons.attach_money, color: Colors.green),
-              _StatCard(title: 'Orders', value: '$_totalOrders', icon: Icons.shopping_cart, color: Colors.blue),
-              _StatCard(title: 'Products', value: '$_totalProducts', icon: Icons.inventory_2, color: Colors.purple),
-              _StatCard(title: 'Users', value: '$_totalUsers', icon: Icons.people, color: Colors.orange),
+              _StatCard(
+                title: 'Revenue',
+                value: AppConstants.formatPrice(_totalRevenue),
+                icon: Icons.attach_money,
+                color: Colors.green,
+              ),
+              _StatCard(
+                title: 'Orders',
+                value: '$_totalOrders',
+                icon: Icons.shopping_cart,
+                color: Colors.blue,
+              ),
+              _StatCard(
+                title: 'Products',
+                value: '$_totalProducts',
+                icon: Icons.inventory_2,
+                color: Colors.purple,
+              ),
+              _StatCard(
+                title: 'Users',
+                value: '$_totalUsers',
+                icon: Icons.people,
+                color: Colors.orange,
+              ),
             ],
           ),
         ],
@@ -82,7 +114,12 @@ class _StatCard extends StatelessWidget {
   final IconData icon;
   final Color color;
 
-  const _StatCard({required this.title, required this.value, required this.icon, required this.color});
+  const _StatCard({
+    required this.title,
+    required this.value,
+    required this.icon,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -96,16 +133,25 @@ class _StatCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(title, style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                Text(
+                  title,
+                  style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                ),
                 Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   child: Icon(icon, color: color, size: 20),
                 ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(value, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            Text(
+              value,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),

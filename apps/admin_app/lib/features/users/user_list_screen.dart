@@ -37,37 +37,45 @@ class _UserListScreenState extends State<UserListScreen> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _users.isEmpty
-              ? const Center(child: Text('No users yet'))
-              : RefreshIndicator(
-                  onRefresh: _fetchUsers,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _users.length,
-                    itemBuilder: (context, index) {
-                      final user = _users[index];
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
-                            child: Icon(Icons.person, color: AppTheme.primaryColor),
-                          ),
-                          title: Text(user['full_name'] ?? 'No Name', style: const TextStyle(fontWeight: FontWeight.w600)),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (user['phone'] != null) Text(user['phone']),
-                              Text(
-                                'Joined: ${DateTime.parse(user['created_at']).day}/${DateTime.parse(user['created_at']).month}/${DateTime.parse(user['created_at']).year}',
-                                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-                              ),
-                            ],
-                          ),
+          ? const Center(child: Text('No users yet'))
+          : RefreshIndicator(
+              onRefresh: _fetchUsers,
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: _users.length,
+                itemBuilder: (context, index) {
+                  final user = _users[index];
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: AppTheme.primaryColor.withValues(
+                          alpha: 0.1,
                         ),
-                      );
-                    },
-                  ),
-                ),
+                        child: Icon(Icons.person, color: AppTheme.primaryColor),
+                      ),
+                      title: Text(
+                        user['full_name'] ?? 'No Name',
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (user['phone'] != null) Text(user['phone']),
+                          Text(
+                            'Joined: ${DateTime.parse(user['created_at']).day}/${DateTime.parse(user['created_at']).month}/${DateTime.parse(user['created_at']).year}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
     );
   }
 }

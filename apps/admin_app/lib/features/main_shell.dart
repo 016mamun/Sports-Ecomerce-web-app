@@ -130,7 +130,7 @@ class MainShell extends StatelessWidget {
         ),
       ),
       selected: isActive,
-      selectedTileColor: AppTheme.accentColor.withOpacity(0.1),
+      selectedTileColor: AppTheme.accentColor.withValues(alpha: 0.1),
       onTap: () {
         context.go(path);
         Navigator.pop(context);

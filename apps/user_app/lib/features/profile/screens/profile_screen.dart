@@ -41,7 +41,7 @@ class ProfileScreen extends ConsumerWidget {
                       width: 64,
                       height: 64,
                       decoration: BoxDecoration(
-                        color: AppTheme.accentColor.withOpacity(0.1),
+                        color: AppTheme.accentColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(32),
                       ),
                       child: Center(
@@ -69,7 +69,7 @@ class ProfileScreen extends ConsumerWidget {
                               ),
                             ),
                             loading: () => const Text('Loading...'),
-                            error: (_, __) => const Text('User'),
+                            error: (_, _) => const Text('User'),
                           ),
                           Text(
                             user?.email ?? '',

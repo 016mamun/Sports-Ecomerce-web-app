@@ -77,7 +77,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
       final response = await queryBuilder.order('created_at', ascending: false);
       setState(() {
-        _results = (response as List).map((json) => Product.fromJson(json)).toList();
+        _results = (response as List)
+            .map((json) => Product.fromJson(json))
+            .toList();
         _loading = false;
       });
     } catch (e) {
@@ -98,7 +100,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           cursorColor: AppTheme.accentColor,
           decoration: InputDecoration(
             hintText: 'Search products...',
-            hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
             filled: false,
             border: InputBorder.none,
             enabledBorder: InputBorder.none,
@@ -154,17 +156,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       },
                     ),
                     const SizedBox(width: 8),
-                    ..._categories.map((cat) => Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: _CategoryChip(
-                        label: cat['name'],
-                        selected: _selectedCategory == cat['id'],
-                        onTap: () {
-                          setState(() => _selectedCategory = cat['id']);
-                          _search(_searchController.text);
-                        },
+                    ..._categories.map(
+                      (cat) => Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: _CategoryChip(
+                          label: cat['name'],
+                          selected: _selectedCategory == cat['id'],
+                          onTap: () {
+                            setState(() => _selectedCategory = cat['id']);
+                            _search(_searchController.text);
+                          },
+                        ),
                       ),
-                    )),
+                    ),
                   ],
                 ),
               ),
@@ -175,38 +179,39 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             child: _loading
                 ? const Center(child: CircularProgressIndicator())
                 : !_hasSearched
-                    ? _SearchHint()
-                    : _results.isEmpty
-                        ? _NoResults(query: _searchController.text)
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Text(
-                                  '${_results.length} product${_results.length != 1 ? 's' : ''} found',
-                                  style: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: GridView.builder(
-                                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 0.7,
-                                    crossAxisSpacing: 12,
-                                    mainAxisSpacing: 12,
-                                  ),
-                                  itemCount: _results.length,
-                                  itemBuilder: (context, index) =>
-                                      _SearchProductCard(product: _results[index]),
-                                ),
-                              ),
-                            ],
+                ? _SearchHint()
+                : _results.isEmpty
+                ? _NoResults(query: _searchController.text)
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          '${_results.length} product${_results.length != 1 ? 's' : ''} found',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
                           ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GridView.builder(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.7,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 12,
+                              ),
+                          itemCount: _results.length,
+                          itemBuilder: (context, index) =>
+                              _SearchProductCard(product: _results[index]),
+                        ),
+                      ),
+                    ],
+                  ),
           ),
         ],
       ),
@@ -225,7 +230,7 @@ class _SearchHint extends StatelessWidget {
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: AppTheme.accentColor.withOpacity(0.1),
+              color: AppTheme.accentColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Icon(Icons.search, size: 40, color: AppTheme.accentColor),
@@ -336,23 +341,31 @@ class _SearchProductCard extends ConsumerWidget {
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
                 child: product.images.isNotEmpty
                     ? CachedNetworkImage(
                         imageUrl: product.images[0],
                         fit: BoxFit.cover,
-                        placeholder: (_, __) =>
+                        placeholder: (_, _) =>
                             Container(color: Colors.grey[200]),
-                        errorWidget: (_, __, ___) => Container(
+                        errorWidget: (_, _, _) => Container(
                           color: Colors.grey[100],
-                          child: const Icon(Icons.sports_basketball,
-                              color: Colors.grey, size: 40),
+                          child: const Icon(
+                            Icons.sports_basketball,
+                            color: Colors.grey,
+                            size: 40,
+                          ),
                         ),
                       )
                     : Container(
                         color: Colors.grey[100],
-                        child: const Icon(Icons.sports_basketball,
-                            color: Colors.grey, size: 40),
+                        child: const Icon(
+                          Icons.sports_basketball,
+                          color: Colors.grey,
+                          size: 40,
+                        ),
                       ),
               ),
             ),
@@ -365,9 +378,10 @@ class _SearchProductCard extends ConsumerWidget {
                     Text(
                       product.categoryName!,
                       style: TextStyle(
-                          color: AppTheme.accentColor,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600),
+                        color: AppTheme.accentColor,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   const SizedBox(height: 2),
                   Text(
@@ -375,7 +389,9 @@ class _SearchProductCard extends ConsumerWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 13),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -399,7 +415,9 @@ class _SearchProductCard extends ConsumerWidget {
                               ref.read(cartProvider.notifier).addItem(product);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('${product.name} added to cart'),
+                                  content: Text(
+                                    '${product.name} added to cart',
+                                  ),
                                   duration: const Duration(seconds: 1),
                                 ),
                               );
@@ -410,7 +428,8 @@ class _SearchProductCard extends ConsumerWidget {
                         textStyle: const TextStyle(fontSize: 12),
                       ),
                       child: Text(
-                          product.stock > 0 ? 'Add to Cart' : 'Out of Stock'),
+                        product.stock > 0 ? 'Add to Cart' : 'Out of Stock',
+                      ),
                     ),
                   ),
                 ],

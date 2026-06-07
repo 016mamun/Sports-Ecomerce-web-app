@@ -86,7 +86,7 @@ class OrderListScreen extends ConsumerWidget {
                                   decoration: BoxDecoration(
                                     color: _statusColor(
                                       order.status,
-                                    ).withOpacity(0.1),
+                                    ).withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(

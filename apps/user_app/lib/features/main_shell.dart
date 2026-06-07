@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/providers.dart';
-import '../core/theme.dart';
 
 class MainShell extends ConsumerWidget {
   final Widget child;
@@ -67,10 +66,12 @@ class MainShell extends ConsumerWidget {
     if (location == '/') return 0;
     if (location.startsWith('/products')) return 1;
     if (location.startsWith('/search')) return 2;
-    if (location.startsWith('/cart') || location.startsWith('/checkout'))
+    if (location.startsWith('/cart') || location.startsWith('/checkout')) {
       return 3;
-    if (location.startsWith('/profile') || location.startsWith('/orders'))
+    }
+    if (location.startsWith('/profile') || location.startsWith('/orders')) {
       return 4;
+    }
     return 0;
   }
 

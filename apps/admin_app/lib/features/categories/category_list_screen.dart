@@ -45,7 +45,10 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
               controller: nameController,
               decoration: const InputDecoration(labelText: 'Category Name'),
               onChanged: (v) {
-                slugController.text = v.toLowerCase().replaceAll(RegExp(r'[^\w\s-]'), '').replaceAll(RegExp(r'\s+'), '-');
+                slugController.text = v
+                    .toLowerCase()
+                    .replaceAll(RegExp(r'[^\w\s-]'), '')
+                    .replaceAll(RegExp(r'\s+'), '-');
               },
             ),
             const SizedBox(height: 12),
@@ -56,8 +59,14 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
-          ElevatedButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Add')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Add'),
+          ),
         ],
       ),
     );
@@ -80,8 +89,14 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
         title: const Text('Delete Category'),
         content: const Text('Are you sure?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
-          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Delete', style: TextStyle(color: Colors.red))),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
         ],
       ),
     );
@@ -97,32 +112,46 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _categories.isEmpty
-              ? const Center(child: Text('No categories yet'))
-              : RefreshIndicator(
-                  onRefresh: _fetchCategories,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _categories.length,
-                    itemBuilder: (context, index) {
-                      final cat = _categories[index];
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: AppTheme.accentColor.withOpacity(0.1),
-                            child: Text(cat['name'][0], style: TextStyle(color: AppTheme.accentColor, fontWeight: FontWeight.bold)),
-                          ),
-                          title: Text(cat['name'], style: const TextStyle(fontWeight: FontWeight.w600)),
-                          subtitle: Text(cat['slug']),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete_outline, color: Colors.red),
-                            onPressed: () => _deleteCategory(cat['id']),
+          ? const Center(child: Text('No categories yet'))
+          : RefreshIndicator(
+              onRefresh: _fetchCategories,
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: _categories.length,
+                itemBuilder: (context, index) {
+                  final cat = _categories[index];
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: AppTheme.accentColor.withValues(
+                          alpha: 0.1,
+                        ),
+                        child: Text(
+                          cat['name'][0],
+                          style: TextStyle(
+                            color: AppTheme.accentColor,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ),
+                      title: Text(
+                        cat['name'],
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      subtitle: Text(cat['slug']),
+                      trailing: IconButton(
+                        icon: const Icon(
+                          Icons.delete_outline,
+                          color: Colors.red,
+                        ),
+                        onPressed: () => _deleteCategory(cat['id']),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addCategory,
         child: const Icon(Icons.add),

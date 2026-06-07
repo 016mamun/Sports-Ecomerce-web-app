@@ -24,33 +24,54 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   Future<void> _fetchOrder() async {
     final data = await Supabase.instance.client
         .from('orders')
-        .select('*, order_items(*, product:products(name)), profile:profiles(full_name, phone)')
+        .select(
+          '*, order_items(*, product:products(name)), profile:profiles(full_name, phone)',
+        )
         .eq('id', widget.orderId)
         .single();
-    setState(() { _order = data; _loading = false; });
+    setState(() {
+      _order = data;
+      _loading = false;
+    });
   }
 
   Future<void> _updateStatus(String status) async {
-    await Supabase.instance.client.from('orders').update({'status': status}).eq('id', widget.orderId);
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Status updated!')));
+    await Supabase.instance.client
+        .from('orders')
+        .update({'status': status})
+        .eq('id', widget.orderId);
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Status updated!')));
     _fetchOrder();
   }
 
   Color _statusColor(String status) {
     switch (status) {
-      case 'pending': return Colors.orange;
-      case 'confirmed': return Colors.blue;
-      case 'shipped': return Colors.purple;
-      case 'delivered': return Colors.green;
-      case 'cancelled': return Colors.red;
-      default: return Colors.grey;
+      case 'pending':
+        return Colors.orange;
+      case 'confirmed':
+        return Colors.blue;
+      case 'shipped':
+        return Colors.purple;
+      case 'delivered':
+        return Colors.green;
+      case 'cancelled':
+        return Colors.red;
+      default:
+        return Colors.grey;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    if (_order == null) return const Scaffold(body: Center(child: Text('Order not found')));
+    if (_loading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    if (_order == null) {
+      return const Scaffold(body: Center(child: Text('Order not found')));
+    }
 
     final items = List<Map<String, dynamic>>.from(_order!['order_items'] ?? []);
 
@@ -69,16 +90,41 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Status: ${_order!['status']}', style: TextStyle(fontWeight: FontWeight.bold, color: _statusColor(_order!['status']))),
+                        Text(
+                          'Status: ${_order!['status']}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: _statusColor(_order!['status']),
+                          ),
+                        ),
                         PopupMenuButton<String>(
                           onSelected: _updateStatus,
-                          itemBuilder: (ctx) => ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'].map((s) => PopupMenuItem(value: s, child: Text(s[0].toUpperCase() + s.substring(1)))).toList(),
+                          itemBuilder: (ctx) =>
+                              [
+                                    'pending',
+                                    'confirmed',
+                                    'shipped',
+                                    'delivered',
+                                    'cancelled',
+                                  ]
+                                  .map(
+                                    (s) => PopupMenuItem(
+                                      value: s,
+                                      child: Text(
+                                        s[0].toUpperCase() + s.substring(1),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
                           child: const Chip(label: Text('Update Status')),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Text('Order #${widget.orderId.substring(0, 8).toUpperCase()}', style: TextStyle(color: Colors.grey[500], fontSize: 12)),
+                    Text(
+                      'Order #${widget.orderId.substring(0, 8).toUpperCase()}',
+                      style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                    ),
                   ],
                 ),
               ),
@@ -86,19 +132,27 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             const SizedBox(height: 16),
 
             // Customer Info
-            Text('Customer', style: AppTheme.headingStyle.copyWith(fontSize: 18)),
+            Text(
+              'Customer',
+              style: AppTheme.headingStyle.copyWith(fontSize: 18),
+            ),
             const SizedBox(height: 8),
             Card(
               child: ListTile(
                 leading: const Icon(Icons.person),
                 title: Text(_order!['profile']?['full_name'] ?? 'N/A'),
-                subtitle: Text(_order!['profile']?['phone'] ?? _order!['phone']),
+                subtitle: Text(
+                  _order!['profile']?['phone'] ?? _order!['phone'],
+                ),
               ),
             ),
             const SizedBox(height: 16),
 
             // Shipping
-            Text('Shipping Address', style: AppTheme.headingStyle.copyWith(fontSize: 18)),
+            Text(
+              'Shipping Address',
+              style: AppTheme.headingStyle.copyWith(fontSize: 18),
+            ),
             const SizedBox(height: 8),
             Card(
               child: ListTile(
@@ -109,16 +163,28 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             const SizedBox(height: 16),
 
             // Items
-            Text('Order Items', style: AppTheme.headingStyle.copyWith(fontSize: 18)),
+            Text(
+              'Order Items',
+              style: AppTheme.headingStyle.copyWith(fontSize: 18),
+            ),
             const SizedBox(height: 8),
-            ...items.map((item) => Card(
-              margin: const EdgeInsets.only(bottom: 8),
-              child: ListTile(
-                title: Text(item['product']?['name'] ?? 'Product'),
-                subtitle: Text('Qty: ${item['quantity']} x ${AppConstants.formatPrice((item['unit_price'] as num).toDouble())}'),
-                trailing: Text(AppConstants.formatPrice((item['unit_price'] as num).toDouble() * item['quantity']), style: const TextStyle(fontWeight: FontWeight.bold)),
+            ...items.map(
+              (item) => Card(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  title: Text(item['product']?['name'] ?? 'Product'),
+                  subtitle: Text(
+                    'Qty: ${item['quantity']} x ${AppConstants.formatPrice((item['unit_price'] as num).toDouble())}',
+                  ),
+                  trailing: Text(
+                    AppConstants.formatPrice(
+                      (item['unit_price'] as num).toDouble() * item['quantity'],
+                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-            )),
+            ),
             const SizedBox(height: 16),
 
             // Total
@@ -128,8 +194,23 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Total', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    Text(AppConstants.formatPrice((_order!['total_amount'] as num).toDouble()), style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppTheme.accentColor)),
+                    const Text(
+                      'Total',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      AppConstants.formatPrice(
+                        (_order!['total_amount'] as num).toDouble(),
+                      ),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.accentColor,
+                      ),
+                    ),
                   ],
                 ),
               ),

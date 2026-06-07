@@ -37,21 +37,48 @@ class HomeScreen extends ConsumerWidget {
                     Row(
                       children: [
                         Container(
-                          width: 40, height: 40,
-                          decoration: BoxDecoration(color: AppTheme.accentColor, borderRadius: BorderRadius.circular(10)),
-                          child: const Center(child: Text('F', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20))),
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: AppTheme.accentColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'F',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 12),
-                        const Text('FNF Sports', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                        const Text(
+                          'FNF Sports',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 24),
                     RichText(
                       text: TextSpan(
-                        style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                         children: [
                           const TextSpan(text: 'Gear Up for '),
-                          TextSpan(text: 'Victory', style: TextStyle(color: AppTheme.accentColor)),
+                          TextSpan(
+                            text: 'Victory',
+                            style: TextStyle(color: AppTheme.accentColor),
+                          ),
                         ],
                       ),
                     ),
@@ -82,8 +109,14 @@ class HomeScreen extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Categories', style: AppTheme.headingStyle.copyWith(fontSize: 20)),
-                      TextButton(onPressed: () => context.go('/products'), child: const Text('View All')),
+                      Text(
+                        'Categories',
+                        style: AppTheme.headingStyle.copyWith(fontSize: 20),
+                      ),
+                      TextButton(
+                        onPressed: () => context.go('/products'),
+                        child: const Text('View All'),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -96,32 +129,51 @@ class HomeScreen extends ConsumerWidget {
                         itemBuilder: (context, index) {
                           final cat = categories[index];
                           return GestureDetector(
-                            onTap: () => context.go('/products?category=${cat.slug}'),
+                            onTap: () =>
+                                context.go('/products?category=${cat.slug}'),
                             child: Container(
                               width: 90,
                               margin: const EdgeInsets.only(right: 12),
                               child: Column(
                                 children: [
                                   Container(
-                                    width: 56, height: 56,
+                                    width: 56,
+                                    height: 56,
                                     decoration: BoxDecoration(
-                                      color: AppTheme.accentColor.withOpacity(0.1),
+                                      color: AppTheme.accentColor.withValues(
+                                        alpha: 0.1,
+                                      ),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Center(
-                                      child: Text(cat.name[0], style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.accentColor)),
+                                      child: Text(
+                                        cat.name[0],
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppTheme.accentColor,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  Text(cat.name, style: const TextStyle(fontSize: 12), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  Text(
+                                    cat.name,
+                                    style: const TextStyle(fontSize: 12),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ],
                               ),
                             ),
                           );
                         },
                       ),
-                      loading: () => const Center(child: CircularProgressIndicator()),
-                      error: (_, __) => const Center(child: Text('Error loading categories')),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (_, _) =>
+                          const Center(child: Text('Error loading categories')),
                     ),
                   ),
                 ],
@@ -136,8 +188,14 @@ class HomeScreen extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('New Arrivals', style: AppTheme.headingStyle.copyWith(fontSize: 20)),
-                  TextButton(onPressed: () => context.go('/products'), child: const Text('View All')),
+                  Text(
+                    'New Arrivals',
+                    style: AppTheme.headingStyle.copyWith(fontSize: 20),
+                  ),
+                  TextButton(
+                    onPressed: () => context.go('/products'),
+                    child: const Text('View All'),
+                  ),
                 ],
               ),
             ),
@@ -153,17 +211,23 @@ class HomeScreen extends ConsumerWidget {
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    if (index >= products.length) return null;
-                    return _ProductCard(product: products[index]);
-                  },
-                  childCount: products.length > 8 ? 8 : products.length,
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  if (index >= products.length) return null;
+                  return _ProductCard(product: products[index]);
+                }, childCount: products.length > 8 ? 8 : products.length),
+              ),
+            ),
+            loading: () => const SliverToBoxAdapter(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32),
+                  child: CircularProgressIndicator(),
                 ),
               ),
             ),
-            loading: () => const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(32), child: CircularProgressIndicator()))),
-            error: (_, __) => const SliverToBoxAdapter(child: Center(child: Text('Error loading products'))),
+            error: (_, _) => const SliverToBoxAdapter(
+              child: Center(child: Text('Error loading products')),
+            ),
           ),
         ],
       ),
@@ -185,15 +249,28 @@ class _ProductCard extends ConsumerWidget {
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
                 child: product.images.isNotEmpty
                     ? CachedNetworkImage(
                         imageUrl: product.images[0],
                         fit: BoxFit.cover,
-                        placeholder: (_, __) => Container(color: Colors.grey[200]),
-                        errorWidget: (_, __, ___) => Container(color: Colors.grey[200], child: const Icon(Icons.image, color: Colors.grey)),
+                        placeholder: (_, _) =>
+                            Container(color: Colors.grey[200]),
+                        errorWidget: (_, _, _) => Container(
+                          color: Colors.grey[200],
+                          child: const Icon(Icons.image, color: Colors.grey),
+                        ),
                       )
-                    : Container(color: Colors.grey[200], child: const Icon(Icons.sports_basketball, color: Colors.grey, size: 40)),
+                    : Container(
+                        color: Colors.grey[200],
+                        child: const Icon(
+                          Icons.sports_basketball,
+                          color: Colors.grey,
+                          size: 40,
+                        ),
+                      ),
               ),
             ),
             Padding(
@@ -201,14 +278,37 @@ class _ProductCard extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(product.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                  Text(
+                    product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Text(AppConstants.formatPrice(product.price), style: TextStyle(color: AppTheme.accentColor, fontWeight: FontWeight.bold, fontSize: 15)),
-                      if (product.comparePrice != null && product.comparePrice! > product.price) ...[
+                      Text(
+                        AppConstants.formatPrice(product.price),
+                        style: TextStyle(
+                          color: AppTheme.accentColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      if (product.comparePrice != null &&
+                          product.comparePrice! > product.price) ...[
                         const SizedBox(width: 6),
-                        Text(AppConstants.formatPrice(product.comparePrice!), style: TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey[400], fontSize: 12)),
+                        Text(
+                          AppConstants.formatPrice(product.comparePrice!),
+                          style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            color: Colors.grey[400],
+                            fontSize: 12,
+                          ),
+                        ),
                       ],
                     ],
                   ),
@@ -220,10 +320,16 @@ class _ProductCard extends ConsumerWidget {
                         onPressed: () {
                           ref.read(cartProvider.notifier).addItem(product);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('${product.name} added to cart'), duration: const Duration(seconds: 1)),
+                            SnackBar(
+                              content: Text('${product.name} added to cart'),
+                              duration: const Duration(seconds: 1),
+                            ),
                           );
                         },
-                        style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 8), textStyle: const TextStyle(fontSize: 12)),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          textStyle: const TextStyle(fontSize: 12),
+                        ),
                         child: const Text('Add to Cart'),
                       ),
                     )
@@ -232,7 +338,10 @@ class _ProductCard extends ConsumerWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       alignment: Alignment.center,
-                      child: const Text('Out of Stock', style: TextStyle(color: Colors.red, fontSize: 12)),
+                      child: const Text(
+                        'Out of Stock',
+                        style: TextStyle(color: Colors.red, fontSize: 12),
+                      ),
                     ),
                 ],
               ),

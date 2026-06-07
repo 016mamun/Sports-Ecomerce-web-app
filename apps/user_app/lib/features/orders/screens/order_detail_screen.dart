@@ -77,7 +77,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: _statusColor(_order!.status).withOpacity(0.1),
+                      color: _statusColor(
+                        _order!.status,
+                      ).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(

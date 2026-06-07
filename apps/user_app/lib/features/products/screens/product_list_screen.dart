@@ -59,9 +59,9 @@ class _ProductCard extends ConsumerWidget {
                     ? CachedNetworkImage(
                         imageUrl: product.images[0],
                         fit: BoxFit.cover,
-                        placeholder: (_, __) =>
+                        placeholder: (_, _) =>
                             Container(color: Colors.grey[200]),
-                        errorWidget: (_, __, ___) => Container(
+                        errorWidget: (_, _, _) => Container(
                           color: Colors.grey[200],
                           child: const Icon(Icons.image),
                         ),
